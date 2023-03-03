@@ -34,6 +34,58 @@ app.get("/getAllEvents",(req, res) =>{
     });
 })
 
+// API to get a sport given an id
+app.get("/getEventBySport/:id",(req, res) =>{
+    axios.get("https://partners.betvictor.mobi/en-gb/in-play/1/events")
+    .then((response) => {
+        let responseArray = [];
+        // retrieve all sports.
+        const sportsData = response.data.result.sports;
+        // loop through data to retrieve all of the sports
+        for (const i in sportsData) {
+            // check the id of the sport and return if it is the same as what has been requested.
+            if(sportsData[i].id == req.params.id){
+                responseArray.push(sportsData[i].comp);
+            }
+        }
+        if(responseArray.length == 0) responseArray = "No Data Found";
+        res.send(responseArray);
+    }).catch((err) => {
+        res.send(err);
+    });
+})
+
+// API to get an events given an id
+app.get("/getEventById/:id",(req, res) =>{
+    axios.get("https://partners.betvictor.mobi/en-gb/in-play/1/events")
+    .then((response) => {
+        let responseArray = [];
+        // retrieve all sports.
+        const sportsData = response.data.result.sports;
+        // loop through data to retrieve all of the sports
+        for (const i in sportsData) {
+            console.log("test 1: ",sportsData[i]);
+            // loop through data to retrieve all of the competitions
+            for (const j in sportsData[i].comp){
+                // loop through data to retrieve all of the events
+                console.log("test 2: ",sportsData[i].comp);
+                for (const y in sportsData[i].comp[j].events){
+                    console.log("test 3: ",sportsData[i].comp[j].events[y].id);
+                    // check the id of the event and return if it is the same as what has been requested.
+                    if(sportsData[i].comp[j].events[y].id == req.params.id){
+                        console.log("test: ",sportsData[i].comp[j].events[y]);
+                        responseArray.push(sportsData[i].comp[j].events[y]);
+                    }
+                }
+            }
+        }
+        if(responseArray.length == 0) responseArray = "No Data Found";
+        res.send(responseArray);
+    }).catch((err) => {
+        res.send(err);
+    });
+})
+
 // connect the server
 app.listen(PORT,() => {
     console.log(`Running Server on Port ${PORT}`);
