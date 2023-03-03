@@ -64,16 +64,12 @@ app.get("/getEventById/:id",(req, res) =>{
         const sportsData = response.data.result.sports;
         // loop through data to retrieve all of the sports
         for (const i in sportsData) {
-            console.log("test 1: ",sportsData[i]);
             // loop through data to retrieve all of the competitions
             for (const j in sportsData[i].comp){
                 // loop through data to retrieve all of the events
-                console.log("test 2: ",sportsData[i].comp);
                 for (const y in sportsData[i].comp[j].events){
-                    console.log("test 3: ",sportsData[i].comp[j].events[y].id);
                     // check the id of the event and return if it is the same as what has been requested.
                     if(sportsData[i].comp[j].events[y].id == req.params.id){
-                        console.log("test: ",sportsData[i].comp[j].events[y]);
                         responseArray.push(sportsData[i].comp[j].events[y]);
                     }
                 }
